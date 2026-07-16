@@ -26,13 +26,7 @@ export const swaggerSpec = {
     1. Generate OAuth Access Tokens.
     2. Trigger M-Pesa STK Push payment prompts to a user's phone.
     3. Query the status of an initiated STK Push transaction.
-    4. Receive and inspect asynchronous payment callbacks sent by Safaricom.
-    
-    *Developed for training purposes.*`,
-    contact: {
-      name: 'Technical Instructor / Antigravity',
-      email: 'instructor@university.edu'
-    }
+    4. Receive and inspect asynchronous payment callbacks sent by Safaricom.`
   },
   servers: [
     {
