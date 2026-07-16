@@ -107,6 +107,16 @@ export const swaggerSpec = {
               'application/json': {
                 schema: {
                   $ref: '#/components/schemas/ErrorResponse'
+                },
+                example: {
+                  success: false,
+                  message: 'Daraja OAuth Access Token Generation failed [HTTP 400] [Code DARAJA_ERROR]: Unknown Daraja API error',
+                  errors: [
+                    {
+                      code: 'DARAJA_ERROR',
+                      details: 'Unknown Daraja API error'
+                    }
+                  ]
                 }
               }
             }
@@ -177,6 +187,16 @@ export const swaggerSpec = {
               'application/json': {
                 schema: {
                   $ref: '#/components/schemas/ErrorResponse'
+                },
+                example: {
+                  success: false,
+                  message: 'Daraja STK Push Initiation failed [HTTP 500] [Code 500.001.1001]: Internal System Error',
+                  errors: [
+                    {
+                      code: '500.001.1001',
+                      details: 'Internal System Error'
+                    }
+                  ]
                 }
               }
             }
@@ -226,6 +246,16 @@ export const swaggerSpec = {
               'application/json': {
                 schema: {
                   $ref: '#/components/schemas/ErrorResponse'
+                },
+                example: {
+                  success: false,
+                  message: 'Request validation failed.',
+                  errors: [
+                    {
+                      field: 'checkoutRequestId',
+                      message: 'CheckoutRequestId is required.'
+                    }
+                  ]
                 }
               }
             }
@@ -236,6 +266,16 @@ export const swaggerSpec = {
               'application/json': {
                 schema: {
                   $ref: '#/components/schemas/ErrorResponse'
+                },
+                example: {
+                  success: false,
+                  message: 'Daraja STK Push Query failed [HTTP 500] [Code 500.001.1001]: The transaction does not Exist',
+                  errors: [
+                    {
+                      code: '500.001.1001',
+                      details: 'The transaction does not Exist'
+                    }
+                  ]
                 }
               }
             }
