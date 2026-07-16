@@ -269,7 +269,7 @@ export const swaggerSpec = {
                         { Name: 'MpesaReceiptNumber', Value: 'NL12345678' },
                         { Name: 'Balance', Value: 0.00 },
                         { Name: 'TransactionDate', Value: 20260716223540 },
-                        { Name: 'PhoneNumber', Value: 254708374149 }
+                        { Name: 'PhoneNumber', Value: 254714747942 }
                       ]
                     }
                   }
@@ -332,7 +332,7 @@ export const swaggerSpec = {
                           amount: 1,
                           mpesaReceiptNumber: 'NL12345678',
                           transactionDate: '2026-07-16T22:35:40+03:00',
-                          phoneNumber: 254708374149
+                          phoneNumber: 254714747942
                         }
                       }
                     ]
@@ -405,7 +405,7 @@ export const swaggerSpec = {
           phoneNumber: {
             type: 'string',
             description: 'The customer phone number to receive the prompt. Can be formatted as 07..., 2547..., or +2547...',
-            example: '254708374149'
+            example: '254714747942'
           },
           reference: {
             type: 'string',
@@ -415,7 +415,7 @@ export const swaggerSpec = {
           description: {
             type: 'string',
             description: 'Description of payment (max 18 characters).',
-            example: 'Tuition Fee Payment'
+            example: 'Tuition Payment'
           }
         }
       },
