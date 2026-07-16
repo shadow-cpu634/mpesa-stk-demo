@@ -171,7 +171,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"Body\": {\n    \"stkCallback\": {\n      \"MerchantRequestID\": \"29115-346213-1\",\n      \"CheckoutRequestID\": \"{{checkout_request_id}}\",\n      \"ResultCode\": 0,\n      \"ResultDesc\": \"The service request is processed successfully.\",\n      \"CallbackMetadata\": {\n        \"Item\": [\n          {\n            \"Name\": \"Amount\",\n            \"Value\": 1.00\n          },\n          {\n            \"Name\": \"MpesaReceiptNumber\",\n            \"Value\": \"NL12345678\"\n          },\n          {\n            \"Name\": \"Balance\",\n            \"Value\": 0.00\n          },\n          {\n            \"Name\": \"TransactionDate\",\n            \"Value\": 20260716223540\n          },\n          {\n            \"Name\": \"PhoneNumber\",\n            \"Value\": 254708374149\n          }\n        ]\n      }\n    }\n  }\n}"
+              "raw": "{\n  \"Body\": {\n    \"stkCallback\": {\n      \"MerchantRequestID\": \"29115-346213-1\",\n      \"CheckoutRequestID\": \"{{checkout_request_id}}\",\n      \"ResultCode\": 0,\n      \"ResultDesc\": \"The service request is processed successfully.\",\n      \"CallbackMetadata\": {\n        \"Item\": [\n          {\n            \"Name\": \"Amount\",\n            \"Value\": 1.00\n          },\n          {\n            \"Name\": \"MpesaReceiptNumber\",\n            \"Value\": \"NL12345678\"\n          },\n          {\n            \"Name\": \"Balance\",\n            \"Value\": 0.00\n          },\n          {\n            \"Name\": \"TransactionDate\",\n            \"Value\": 20260716223540\n          },\n          {\n            \"Name\": \"PhoneNumber\",\n            \"Value\": 254714747942\n          }\n        ]\n      }\n    }\n  }\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/payments/callback",
@@ -219,7 +219,7 @@
     },
     {
       "key": "phone_number",
-      "value": "254708374149",
+      "value": "254714747942",
       "type": "string"
     },
     {
