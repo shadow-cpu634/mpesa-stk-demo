@@ -1,0 +1,231 @@
+{
+  "info": {
+    "_postman_id": "b3e34b7f-1d89-49ea-bc47-062e08e6f1f2",
+    "name": "M-Pesa STK Push Demo API",
+    "description": "Postman Collection for testing the M-Pesa Express STK Push Demo backend endpoints. Use this to simulate initiating payments, checking transaction status, and viewing received callbacks.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "System",
+      "item": [
+        {
+          "name": "Check Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/health",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "health"
+              ]
+            },
+            "description": "Verifies that the server is online and returning system uptime and metrics."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Generate Access Token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/auth/token",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "token"
+              ]
+            },
+            "description": "Generates a fresh OAuth Access Token from Safaricom Daraja, or returns the cached active token if it hasn't expired. This avoids rate-limiting."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Initiate STK Push Prompt",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();",
+                  "if (jsonData.success && jsonData.data && jsonData.data.checkoutRequestId) {",
+                  "    pm.environment.set(\"checkout_request_id\", jsonData.data.checkoutRequestId);",
+                  "    console.log(\"Saved checkout_request_id to environment: \" + jsonData.data.checkoutRequestId);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 1.00,\n  \"phoneNumber\": \"{{phone_number}}\",\n  \"reference\": \"INV1001\",\n  \"description\": \"Demo Payment\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/payments/stkpush",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "stkpush"
+              ]
+            },
+            "description": "Sends a payment prompt request to Safaricom Daraja. If valid, Safaricom pushes a Sim Toolkit (STK) prompt directly to your phone handset asking for your M-Pesa PIN. Automatically sets the `checkout_request_id` variable on success."
+          },
+          "response": []
+        },
+        {
+          "name": "Query Transaction Status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"checkoutRequestId\": \"{{checkout_request_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/payments/query",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "query"
+              ]
+            },
+            "description": "Queries Safaricom's servers to check the current status of an STK Push payment using the `checkoutRequestId`. Useful if the callback is delayed or you need immediate status updates."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Callbacks / Webhooks",
+      "item": [
+        {
+          "name": "List Received Callbacks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/payments/callback",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "callback"
+              ]
+            },
+            "description": "Retrieves the list of processed payment callback logs stored in the server's memory. Call this after responding to the STK Push prompt on your handset to view the transaction success details sent by Safaricom."
+          },
+          "response": []
+        },
+        {
+          "name": "Simulate Safaricom Callback Hook",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Body\": {\n    \"stkCallback\": {\n      \"MerchantRequestID\": \"29115-346213-1\",\n      \"CheckoutRequestID\": \"{{checkout_request_id}}\",\n      \"ResultCode\": 0,\n      \"ResultDesc\": \"The service request is processed successfully.\",\n      \"CallbackMetadata\": {\n        \"Item\": [\n          {\n            \"Name\": \"Amount\",\n            \"Value\": 1.00\n          },\n          {\n            \"Name\": \"MpesaReceiptNumber\",\n            \"Value\": \"NL12345678\"\n          },\n          {\n            \"Name\": \"Balance\",\n            \"Value\": 0.00\n          },\n          {\n            \"Name\": \"TransactionDate\",\n            \"Value\": 20260716223540\n          },\n          {\n            \"Name\": \"PhoneNumber\",\n            \"Value\": 254708374149\n          }\n        ]\n      }\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/payments/callback",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "callback"
+              ]
+            },
+            "description": "Simulates a POST request sent by Safaricom to your callback endpoint. Useful for testing callback processing logic locally without exposing your server to the public web via ngrok."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "phone_number",
+      "value": "254708374149",
+      "type": "string"
+    },
+    {
+      "key": "checkout_request_id",
+      "value": "ws_CO_16072026223540892",
+      "type": "string"
+    }
+  ]
+}
