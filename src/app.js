@@ -59,10 +59,78 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ==============================================================================
-// SWAGGER INTERACTIVE DOCUMENTATION
+// SWAGGER INTERACTIVE DOCUMENTATION WITH CUSTOM FINTECH STYLING
 // ==============================================================================
-// Serve Swagger documentation UI at the /docs path
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+const swaggerOptions = {
+  customCss: `
+    .swagger-ui .topbar {
+      background-color: #00A651 !important;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .swagger-ui .topbar-wrapper .link img {
+      content: url("https://upload.wikimedia.org/wikipedia/commons/1/15/M-PESA_LOGO-01.svg") !important;
+      width: auto !important;
+      height: 40px !important;
+    }
+    .swagger-ui .info {
+      background: #F8FAFC !important;
+      border: 1px solid #E2E8F0 !important;
+      padding: 24px !important;
+      border-radius: 12px !important;
+      margin-bottom: 20px !important;
+    }
+    .swagger-ui .info .title {
+      color: #0F172A !important;
+      font-family: 'Outfit', 'Inter', sans-serif !important;
+      font-weight: 700 !important;
+    }
+    .swagger-ui .btn.execute {
+      background-color: #00A651 !important;
+      color: #FFF !important;
+      border-radius: 8px !important;
+      border: none !important;
+      font-weight: 600 !important;
+      transition: background 0.2s ease !important;
+    }
+    .swagger-ui .btn.execute:hover {
+      background-color: #16A34A !important;
+    }
+    .swagger-ui .opblock.opblock-post {
+      border-color: #00A651 !important;
+      background: rgba(0, 166, 81, 0.02) !important;
+    }
+    .swagger-ui .opblock.opblock-post .opblock-summary-method {
+      background-color: #00A651 !important;
+      border-radius: 6px !important;
+    }
+    .swagger-ui .opblock.opblock-post .opblock-summary {
+      border-bottom-color: #00A651 !important;
+    }
+    .swagger-ui .opblock.opblock-get {
+      border-color: #2563EB !important;
+      background: rgba(37, 99, 235, 0.02) !important;
+    }
+    .swagger-ui .opblock.opblock-get .opblock-summary-method {
+      background-color: #2563EB !important;
+      border-radius: 6px !important;
+    }
+    .swagger-ui .opblock.opblock-get .opblock-summary {
+      border-bottom-color: #2563EB !important;
+    }
+    .swagger-ui .scheme-container {
+      background-color: #F8FAFC !important;
+      border: 1px solid #E2E8F0 !important;
+      border-radius: 8px !important;
+      box-shadow: none !important;
+      padding: 16px !important;
+    }
+  `,
+  customSiteTitle: "M-Pesa STK Demo API Documentation",
+  customfavIcon: "https://upload.wikimedia.org/wikipedia/commons/1/15/M-PESA_LOGO-01.svg"
+};
+
+// Serve Swagger documentation UI at the /docs path with custom styles
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerOptions));
 
 // ==============================================================================
 // ROUTE REGISTRATIONS

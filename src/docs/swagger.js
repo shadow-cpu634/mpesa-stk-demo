@@ -8,6 +8,7 @@
  * 
  * WHAT IT DOES:
  * - Exports the complete OpenAPI 3.0.0 JSON specification for the M-Pesa STK Demo.
+ * - Group endpoints under cleanly separated tagged sections with custom emojis.
  * - Documents routes, parameters, request body schemas, and success/error response structures.
  * 
  * WHEN IT SHOULD BE USED:
@@ -18,15 +19,25 @@
 export const swaggerSpec = {
   openapi: '3.0.0',
   info: {
-    title: 'Safaricom M-Pesa STK Push Demo API',
+    title: '🟢 M-Pesa STK Demo API',
     version: '1.0.0',
-    description: `An educational Node.js Express REST API demonstrating integration with Safaricom's Daraja M-Pesa Express (STK Push) API.
-    
-    This API allows you to:
-    1. Generate OAuth Access Tokens.
-    2. Trigger M-Pesa STK Push payment prompts to a user's phone.
-    3. Query the status of an initiated STK Push transaction.
-    4. Receive and inspect asynchronous payment callbacks sent by Safaricom.`
+    description: `## Welcome 👋
+
+This is a production-inspired REST API demonstrating Safaricom Daraja STK Push integration using Node.js, Express, ES Modules, and Layered Architecture.
+
+### Features
+
+- **OAuth Token Generation:** Automated bearer token generation with in-memory caching to optimize network performance.
+- **STK Push (M-Pesa Express):** Initiates payment prompts directly to user handsets.
+- **Callback Handling:** A webhook receiver that parses asynchronous M-Pesa transaction results.
+- **Transaction Status:** Programmatically queries payment statuses from Daraja.
+- **Clean Architecture:** Strict separation of routes, controllers, services, clients, and middleware.
+- **Structured Logging:** Centralized logging using Morgan and unified error formatting.
+
+---
+
+**Built with ❤️ using:**
+Node.js, Express.js, Swagger, and Layered Architecture.`
   },
   servers: [
     {
@@ -34,12 +45,30 @@ export const swaggerSpec = {
       description: 'Local Development Server'
     }
   ],
+  tags: [
+    {
+      name: '🔐 Authentication',
+      description: 'System authorization and Daraja OAuth token generation.'
+    },
+    {
+      name: '💳 Payments',
+      description: 'Triggering payments prompts (STK Push) and querying transaction status.'
+    },
+    {
+      name: '🔔 Callbacks',
+      description: 'Webhook listeners that receive asynchronous payment transaction updates from Safaricom.'
+    },
+    {
+      name: '📊 Health',
+      description: 'Monitoring and uptime diagnostics.'
+    }
+  ],
   paths: {
     '/api/health': {
       get: {
         summary: 'Check API Health Status',
         description: 'Verifies the server is online and returns uptime and memory usage metrics.',
-        tags: ['System'],
+        tags: ['📊 Health'],
         responses: {
           200: {
             description: 'API is healthy and online.',
@@ -74,7 +103,7 @@ export const swaggerSpec = {
       get: {
         summary: 'Generate OAuth Access Token',
         description: 'Requests a fresh OAuth access token from Safaricom Daraja, or returns a cached one if it is still valid.',
-        tags: ['Authentication'],
+        tags: ['🔐 Authentication'],
         responses: {
           200: {
             description: 'Access token generated or fetched from cache.',
@@ -87,7 +116,7 @@ export const swaggerSpec = {
                   success: true,
                   message: 'M-Pesa OAuth Access Token generated successfully.',
                   data: {
-                    accessToken: 'cGFzc3dvcmQxMjM0NTY3ODkwYWJjZGVm',
+                    accessToken: 'uJDVQKu4wksmdSRp7ha7MtTn9gTq',
                     tokenType: 'Bearer',
                     expiresIn: 'Check console logs for absolute cache expiry timestamp'
                   }
@@ -121,8 +150,10 @@ export const swaggerSpec = {
     '/api/payments/stkpush': {
       post: {
         summary: 'Initiate STK Push Payment Prompt',
-        description: 'Requests Safaricom to trigger an M-Pesa PIN prompt (STK Push) on the specified phone number.',
-        tags: ['Payments'],
+        description: `Initiate an STK Push payment request to a customer's phone.
+
+The API validates the request, generates a Daraja password, obtains an OAuth token, sends the STK Push, and registers the transaction checkout ID.`,
+        tags: ['💳 Payments'],
         requestBody: {
           required: true,
           content: {
@@ -202,7 +233,7 @@ export const swaggerSpec = {
       post: {
         summary: 'Query STK Push Status',
         description: 'Queries Safaricom servers to check the current status of an STK Push payment using the CheckoutRequestID.',
-        tags: ['Payments'],
+        tags: ['💳 Payments'],
         requestBody: {
           required: true,
           content: {
@@ -281,7 +312,7 @@ export const swaggerSpec = {
       post: {
         summary: 'Receive M-Pesa Callback (Safaricom Webhook)',
         description: 'The endpoint registered on Daraja where Safaricom posts async transaction results.',
-        tags: ['Callbacks / Webhooks'],
+        tags: ['🔔 Callbacks'],
         requestBody: {
           required: true,
           content: {
@@ -340,7 +371,7 @@ export const swaggerSpec = {
       get: {
         summary: 'List Received Callbacks',
         description: 'Returns the log of recently received payment callbacks currently stored in the server memory.',
-        tags: ['Callbacks / Webhooks'],
+        tags: ['🔔 Callbacks'],
         responses: {
           200: {
             description: 'List of received callbacks.',
@@ -380,6 +411,20 @@ export const swaggerSpec = {
     }
   },
   components: {
+    securitySchemes: {
+      BearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        description: 'Authorization header using Bearer scheme: Bearer <JWT>'
+      },
+      ApiKeyAuth: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'x-api-key',
+        description: 'API Key authorization header: x-api-key: your-api-key'
+      }
+    },
     schemas: {
       SuccessResponse: {
         type: 'object',
