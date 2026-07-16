@@ -21,10 +21,10 @@ import config from './config/index.js';
 
 const server = app.listen(config.port, () => {
   console.log('================================================================');
-  console.log(`🚀 M-PESA STK DEMO SERVER RUNNING IN [${config.env.toUpperCase()}] MODE`);
-  console.log(`🔌 Port: ${config.port}`);
-  console.log(`🔗 Local Server: http://localhost:${config.port}`);
-  console.log(`📚 API Documentation: http://localhost:${config.port}/docs`);
+  console.log(`[INFO] M-PESA STK DEMO SERVER RUNNING IN [${config.env.toUpperCase()}] MODE`);
+  console.log(`[INFO] Port: ${config.port}`);
+  console.log(`[INFO] Local Server: http://localhost:${config.port}`);
+  console.log(`[INFO] API Documentation: http://localhost:${config.port}/docs`);
   console.log('================================================================');
 });
 
